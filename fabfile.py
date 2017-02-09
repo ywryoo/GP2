@@ -8,33 +8,34 @@ MIT License: see LICENSE at root directory
 """
 from fabric.api import *
 from fabric.operations import get, put
+import StringIO
+import os
 
 env.hosts = ['gp2.ryoo.kr']
 env.user = "ywryoo"
 
 VHOST = 'gp2.ryoo.kr'
 APPS_DIR = '/www'
-APP_ROOT = '%s/%s' % (APPS_DIR, VHOST.replace('.', '_'))
-VENV_ROOT = '%s/venv/bin' % (APP_ROOT)
+APP_ROOT = '{}/{}'.format(APPS_DIR, VHOST.replace('.', '_'))
+VENV_ROOT = '{}/venv/bin'.format(APP_ROOT)
+STATIC = '{}/static'.format(APP_ROOT)
 MODULE = 'gp2-core'
+REPO = 'https://github.com/ywryoo/GP2.git'
+
 
 SUPERVISOR_TEMPLATE = '''
-[program:gunicorn]
-command={vroot}/gunicorn {module}:app -c {root}/gunicorn.conf.py
-directory={root}
+[program:{module}]
+command={vroot}/gunicorn app:app -b unix:/tmp/gunicorn.sock -w 2
+directory={root}/{module}
 user=nobody
 autostart=true
 autorestart=true
 redirect_stderr=true
 '''
 SUPERVISOR_DIR = '/etc/supervisor/conf.d/'
-
-REPO = 'https://github.com/ywryoo/GP2.git'
-STATIC = 'static'
-
 NGINX_DIR = '/etc/nginx/sites-'
 NGINX_TEMPLATE = '''
-  upstream app_server {
+  upstream app_server {{
     # fail_timeout=0 means we always retry an upstream even if it failed
     # to return a good HTTP response
 
@@ -43,15 +44,9 @@ NGINX_TEMPLATE = '''
 
     # for a TCP configuration
     # server 192.168.0.7:8000 fail_timeout=0;
-  }
+  }}
 
-  server {
-    # if no Host match, close the connection to prevent host spoofing
-    listen 80 default_server;
-    return 444;
-  }
-
-  server {
+  server {{
     # use 'listen 80 deferred;' for Linux
     # use 'listen 80 accept_filter=httpready;' for FreeBSD
     listen 80 deferred;
@@ -65,12 +60,12 @@ NGINX_TEMPLATE = '''
     # path for static files
     root {static};
 
-    location / {
+    location / {{
       # checks for static file, if not found proxy to app
       try_files $uri @proxy_to_app;
-    }
+    }}
 
-    location @proxy_to_app {
+    location @proxy_to_app {{
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       # enable this if and only if you use HTTPS
       # proxy_set_header X-Forwarded-Proto https;
@@ -79,67 +74,61 @@ NGINX_TEMPLATE = '''
       # redirects, we set the Host: header above already.
       proxy_redirect off;
       proxy_pass http://app_server;
-    }
+    }}
 
     error_page 500 502 503 504 /500.html;
-    location = /500.html {
+    location = /500.html {{
       root {static};
-    }
-  }
+    }}
+  }}
 '''
-
-
-def _render_template(string, context):
-    return Template(string).render(context)
 
 
 def _make_supervisor_conf():
     template = StringIO.StringIO()
-    get('%sflaskapp.tpl' % SUPERVISOR_DIR, template)
-    interpolated = StringIO.StringIO()
-    interpolated.write(_render_template(template.getvalue(), {
-        'domain': VHOST,
-        'root': APP_ROOT,
-        'module': MODULE
-    }))
-    put(interpolated, '%(supervisor_dir)s%(vhost)s.conf' %
-        {'supervisor_dir': SUPERVISOR_DIR, 'vhost': VHOST},
+    template.write(SUPERVISOR_TEMPLATE
+                   .format(module=MODULE, vroot=VENV_ROOT, root=APP_ROOT))
+    put(template,
+        '{supervisor_dir}{vhost}.conf'
+        .format(supervisor_dir=SUPERVISOR_DIR, vhost=VHOST),
         use_sudo=True)
+    template.close()
 
 
 def _make_vhost():
+    ngi_avail = '{nginx}available/{vhost}'.format(nginx=NGINX_DIR, vhost=VHOST)
+    ngi_enabl = '{nginx}enabled/{vhost}'.format(nginx=NGINX_DIR, vhost=VHOST)
     template = StringIO.StringIO()
-    get('%savailable/flask.tpl' % NGINX_DIR, template)
-    interpolated = StringIO.StringIO()
-    interpolated.write(_render_template(template.getvalue(), {
-        'domain': VHOST,
-        'root': APP_ROOT,
-        'static': STATIC
-    }))
-    put(interpolated, '%(nginx)savailable/%(vhost)s' %
-        {'nginx': NGINX_DIR, 'vhost': VHOST}, use_sudo=True)
-    sudo('ln -s %(src)s %(tar)s' %
-         {'src': '%(nginx)savailable/%(vhost)s' %
-          {'nginx': NGINX_DIR, 'vhost': VHOST},
-          'tar': '%(nginx)senabled/%(vhost)s' %
-          {'nginx': NGINX_DIR, 'vhost': VHOST}})
-    run('touch %s/access.log' % APP_ROOT)
-    run('touch %s/error.log' % APP_ROOT)
+    template.write(NGINX_TEMPLATE.format(host=VHOST, static=STATIC))
+    put(template,
+        ngi_avail, use_sudo=True)
+    sudo('ln -s {src} {dest}'.format(src=ngi_avail, dest=ngi_enabl))
+    template.close()
 
 
 def _clone_repo():
     with cd(APPS_DIR):
-        run('git clone %(repo)s %(to)s' %
-            {'repo': REPO, 'to': APP_ROOT})
+        run('git clone {repo} {to}'.format(repo=REPO, to=APP_ROOT))
+
+
+def _install_venv():
+    with cd(APP_ROOT):
+        run('virtualenv venv')
+
+
+def _install_dep():
+    with cd(APP_ROOT):
+        run('{}/pip install -e .'.format(VENV_ROOT))
 
 
 def _update_repo():
     with cd(APP_ROOT):
+        run('git fetch')
         run('git pull')
 
 
 def _reload_webserver():
-    sudo("/etc/init.d/nginx reload")
+    sudo("service nginx reload")
 
 
 def _reload_supervisor():
@@ -147,19 +136,21 @@ def _reload_supervisor():
 
 
 def _start_app():
-    sudo('supervisorctl start %s' % VHOST)
+    sudo('supervisorctl start {}'.format(MODULE))
 
 
-def _reload_app(touch=True):
+def _reload_app(touch=False):
     if touch:
         with cd(APP_ROOT):
             run('touch app.wsgi')
     else:
-        sudo('supervisorctl restart %s' % VHOST)
+        sudo('supervisorctl restart {}'.format(MODULE))
 
 
 def init_deploy():
     _clone_repo()
+    _install_venv()
+    _install_dep()
     _make_vhost()
     _make_supervisor_conf()
     _reload_webserver()
@@ -169,4 +160,5 @@ def init_deploy():
 
 def deploy():
     _update_repo()
+    _install_dep()
     _reload_app()

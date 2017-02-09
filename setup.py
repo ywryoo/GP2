@@ -20,6 +20,11 @@ setup(
         'flask',
         'gunicorn'
     ],
+    extras_require={
+        'dev': [
+            'Fabric'
+        ]
+    },
     setup_requires=[
         'pytest-runner',
     ],

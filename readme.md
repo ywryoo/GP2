@@ -4,7 +4,9 @@ Data visualization system starting from [gatherplot](https://github.com/intuinno
 You can find development journey at [here](http://ryoo.kr/tag/gp2)(korean).
 
 ##How to Deploy?
-
+pip install -e . # only installs "required"
+To develop:
+$ pip install -e .[develop]
 I'm working on this.
 
 ##How to run?
