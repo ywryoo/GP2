@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 """
 setup.py
 setup configuration for setuptools
+---
 Written by Yangwook Ryoo, 2017
 MIT License: see LICENSE at root directory
 """
@@ -16,6 +18,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'flask',
+        'gunicorn'
     ],
     setup_requires=[
         'pytest-runner',
