@@ -1,3 +1,10 @@
+"""
+setup.py
+setup configuration for setuptools
+Written by Yangwook Ryoo, 2017
+MIT License: see LICENSE at root directory
+"""
+
 from setuptools import setup
 
 setup(
