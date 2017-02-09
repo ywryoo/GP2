@@ -123,12 +123,11 @@ def _install_dep():
 
 def _update_repo():
     with cd(APP_ROOT):
-        run('git fetch')
         run('git pull')
 
 
 def _reload_webserver():
-    sudo("service nginx reload")
+    sudo("systemctl reload nginx")
 
 
 def _reload_supervisor():
