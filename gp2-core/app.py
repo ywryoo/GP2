@@ -12,4 +12,4 @@ app = Flask(__name__)
 
 @app.route('/')
 def route_root():
-    return 'Hello, WWWWWWWWorld!'
+    return 'Hello, World!'
