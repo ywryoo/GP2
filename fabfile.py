@@ -18,8 +18,8 @@ VHOST = 'gp2.ryoo.kr'
 APPS_DIR = '/www'
 APP_ROOT = '{}/{}'.format(APPS_DIR, VHOST.replace('.', '_'))
 VENV_ROOT = '{}/venv/bin'.format(APP_ROOT)
-STATIC = '{}/static'.format(APP_ROOT)
 MODULE = 'gp2-core'
+STATIC = '{}/{}/static'.format(APP_ROOT, MODULE)
 REPO = 'https://github.com/ywryoo/GP2.git'
 
 
