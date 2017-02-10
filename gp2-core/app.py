@@ -12,4 +12,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def route_root():
-    return 'Hello, World!'
+    return '<a href="./scatterplot">go!</a>'
+
+
+@app.route('/scatterplot')
+def route_scatterplot():
+    return 'Coming Sooooooooon'
