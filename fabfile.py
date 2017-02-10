@@ -58,14 +58,13 @@ NGINX_TEMPLATE = '''
     keepalive_timeout 5;
 
     # path for static files
-    root {static};
 
-    location / {{
-      # checks for static file, if not found proxy to app
-      try_files $uri @proxy_to_app;
+    location /static/ {{
+      alias {static}/;
+      autoindex off;
     }}
 
-    location @proxy_to_app {{
+    location / {{
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       # enable this if and only if you use HTTPS
       # proxy_set_header X-Forwarded-Proto https;
@@ -78,7 +77,7 @@ NGINX_TEMPLATE = '''
 
     error_page 500 502 503 504 /500.html;
     location = /500.html {{
-      root {static};
+      alias {static};
     }}
   }}
 '''
