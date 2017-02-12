@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Gatherplot</title>
     <meta name="description" content="nomarect">
     <link rel="stylesheet" type="text/css" href="./assets/app.css">
@@ -168,8 +168,8 @@
 
                         </select>
 
-                        </br>
-                        </br>
+                        <br>
+                        <br>
                         Mark nodes with color according to
 
                         <select ng-model="nomaConfig.colorDim" ng-options="f for f in nomaConfig.dims">
@@ -182,7 +182,7 @@
 
                     <div ng-class="{tryMe: isRelativeSelectFocused}">
                         <h6>
-                            <input type='checkbox' ng-model="nomaConfig.relativeMode" ng-trueValue="relative" ng-false-value='absolute'>Check this to make it easy to compare groups of different sizes.</h6>
+                            <input type="checkbox" ng-model="nomaConfig.relativeMode" ng-truevalue="relative" ng-false-value="absolute">Check this to make it easy to compare groups of different sizes.</h6>
 
                     </div>
                     <alert class="chart-instruction" ng-show="isRelativeSelectFocused" close="isRelativeSelectFocused=false">
@@ -192,13 +192,13 @@
                 </div>
             </div>
             <accordion close-others="false">
-                <accordion-group is-open="isAdvancedOptionOpen" ng-hide='false'>
+                <accordion-group is-open="isAdvancedOptionOpen" ng-hide="false">
 
 
                     <accordion-heading> <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isAdvancedOptionOpen, 'glyphicon-chevron-right': !isAdvancedOptionOpen}"></i>
                         Under the Hood (Advanced Option)</accordion-heading>
                     <div class="well">
-                        <div class="row ">
+                        <div class="row">
 
 
                             <div class="col-md-4">
@@ -242,7 +242,7 @@
 
 
                         </div>
-                        <div class="row ">
+                        <div class="row">
 
 
                             <div class="col-md-4">
@@ -417,10 +417,10 @@
                                 <td>First begin with all the people on board.
                                 </td>
                                 <td>
-                                    <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForTitanicLoadAll()">Visualize
+                                    <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForTitanicLoadAll()">Visualize
                                 </a>
                                 </td>
-                                </tr>
+                                
                                 <tr>
                                     <td>
                                         <p>
@@ -428,7 +428,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForTitanicLoadAllSurvived()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForTitanicLoadAllSurvived()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -440,7 +440,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForTitanicGenderSurvived()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForTitanicGenderSurvived()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -451,7 +451,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForTitanicClassGenderSurvived()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForTitanicClassGenderSurvived()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -464,7 +464,7 @@
                                     </td>
                                     <td>
 
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForTitanicClassGenderSurvivedRelative()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForTitanicClassGenderSurvivedRelative()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -502,10 +502,10 @@
                                 <td>First create a random dataset with large nodes to create overplotting.
                                 </td>
                                 <td>
-                                    <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForContinuousScatter()">Visualize
+                                    <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForContinuousScatter()">Visualize
                                 </a>
                                 </td>
-                                </tr>
+                                
                                 <tr>
                                     <td>
                                         <p>
@@ -513,7 +513,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForContinuousGather()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForContinuousGather()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -525,7 +525,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForContinuousGatherWithBinSize()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForContinuousGatherWithBinSize()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -536,7 +536,7 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <a href="" class="pull-right btn btn-link btn-default " ng-click="settingForContinuousGatherWithBinSizeRelative()">Visualize
+                                        <a href="" class="pull-right btn btn-link btn-default" ng-click="settingForContinuousGatherWithBinSizeRelative()">Visualize
                                 </a>
                                     </td>
                                 </tr>
@@ -597,7 +597,7 @@
     ga('send', 'pageview');
     </script>
 
-    </div>
+    
     <script src="./assets/app.js"></script>
     <script src="./scripts/directives/d3Basic.js"></script>
 

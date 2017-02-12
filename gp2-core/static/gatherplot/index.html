@@ -1,50 +1,25 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gatherplot</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="nomarect">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <link rel="stylesheet" href="styles/vendor.cdeebe9a.css">
-    <link rel="stylesheet" href="styles/main.7aff9000.css">
+    <base href="./">
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/angular-ui-select/select.min.css">
+    <link rel="stylesheet" href="vendor/angular-ui-grid/ui-grid.min.css">
+    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="styles/gatherplot.css">
 </head>
 
-<body data-ng-app="myApp">
-    <div>
-        <div class="navbar navbar-default navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button><a class="navbar-brand" ng-href="#/">Gatherplot</a>
-                </div>
-                <div class="navbar-collapse" ng-class="{collapse: isCollapsed}">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#upload">Load new data</a>
-                        </li>
-                        <li><a href="#browse">Browse data</a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a ng-hide-auth="" href='#/login'>log in</a>
-                            <a ng-show-auth="" href="#/account">account</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div ng-view></div>
-        <!--[if lt IE 9]>
-        <script src="scripts/oldieshim.ce92ecbc.js"></script>
-        <![endif]-->
-        <script src="scripts/vendor.c74a5eb2.js"></script>
-        <script src="scripts/scripts.72932a86.js"></script>
+<body>
+    <my-app></my-app>
+    <script src="vendor/core-js/client/shim.min.js"></script>
+    <script src="vendor/zone.js/dist/zone.js"></script>
+    <script src="app/gatherplot.min.js"></script>
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>

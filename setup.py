@@ -4,7 +4,7 @@ setup.py
 setup configuration for setuptools
 ---
 Written by Yangwook Ryoo, 2017
-MIT License: see LICENSE at root directory
+MIT License: see LICENSE in the root directory of this source tree.
 """
 
 from setuptools import setup

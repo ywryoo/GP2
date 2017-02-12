@@ -4,7 +4,7 @@ fabfile.py
 deploy configuration for fabric
 ---
 Written by Yangwook Ryoo, 2017
-MIT License: see LICENSE at root directory
+MIT License: see LICENSE in the root directory of this source tree.
 """
 from fabric.api import *
 from fabric.operations import get, put
