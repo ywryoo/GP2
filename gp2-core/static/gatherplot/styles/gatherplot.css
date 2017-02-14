@@ -1,3 +1,5 @@
+[hidden] { display: none !important;}
+
 #duckGrid .ui-grid-header-canvas {
 
   height:90px;
@@ -130,14 +132,14 @@ rect.hidden {
   stroke-width:2px;
 }
 
-.matrixFrame { 
+.matrixFrame {
    fill: none;
   stroke: #aaa;
   shape-rendering: crispEdges;
 
 }
 
-/*.matrixFrame:hover { 
+/*.matrixFrame:hover {
    fill: none;
   stroke: red;
   stroke-width: 3px;
@@ -153,7 +155,7 @@ div .matrixRow {
 
 div.matrixGroup {
   width: 100%;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 div .GPLOM {
@@ -163,7 +165,7 @@ div .GPLOM {
   display:inline-block;
   cursor:pointer;
   /*border: 1px;*/
-  
+
   /*stroke:black;*/
 }
 
@@ -181,39 +183,39 @@ div .GPLOMBrush {
   display:inline-block;
   cursor:pointer;
   /*border: 1px;*/
-  
+
   /*stroke:black;*/
 }
-div.clusterControlBox {   
-         
-  text-align: center;           
-  width: 60px;                  
-  height: 28px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: lightsteelblue;   
-  border: 0px;      
-  border-radius: 8px;           
-  pointer-events: none;         
+div.clusterControlBox {
+
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
 }
 
 
-.clusterControlBracket {   
-      
-  text-align: center;           
-  width: 60px;                  
-  height: 28px;                 
-  padding: 2px;             
-  font: 12px sans-serif;        
-  background: lightsteelgreen;   
-  border: 0px;      
-  border-radius: 8px;           
-  pointer-events: none;         
+.clusterControlBracket {
+
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelgreen;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
 }
 
-.clusterControlButton:hover {   
-   
-  background: white;        
+.clusterControlButton:hover {
+
+  background: white;
 }
 
 
@@ -349,4 +351,3 @@ svg {
 .dot {
   stroke-width: 1;
 }
-
