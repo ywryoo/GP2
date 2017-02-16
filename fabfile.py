@@ -89,7 +89,7 @@ NGINX_TEMPLATE = '''
 def _make_supervisor_conf():
     template = StringIO.StringIO()
     template.write(SUPERVISOR_TEMPLATE
-                   .format(vroot=VENV_ROOT, root=APP_ROOT))
+                   .format(vroot=VENV_ROOT, root=APP_ROOT, module=MODULE))
     put(template,
         '{supervisor_dir}{vhost}.conf'
         .format(supervisor_dir=SUPERVISOR_DIR, vhost=VHOST),

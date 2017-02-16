@@ -7,14 +7,12 @@ Written by Yangwook Ryoo, 2017
 MIT License: see LICENSE at root directory
 """
 from flask import Flask
-app = Flask(__name__)
+from gp2gatherplot.gatherplot import gatherplot
+
+app = Flask('gp-core')
+app.register_blueprint(gatherplot, url_prefix='/gatherplot')
 
 
 @app.route('/')
 def route_root():
-    return '<a href="./scatterplot">go!</a>'
-
-
-@app.route('/scatterplot')
-def route_scatterplot():
-    return 'Coming Sooooooooon'
+    return 'Modules are Here!<br><a href="./gatherpot">gatherplot</a>'
