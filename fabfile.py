@@ -18,15 +18,15 @@ VHOST = 'gp2.ryoo.kr'
 APPS_DIR = '/www'
 APP_ROOT = '{}/{}'.format(APPS_DIR, VHOST.replace('.', '_'))
 VENV_ROOT = '{}/venv/bin'.format(APP_ROOT)
-MODULE = 'gp2-core'
-STATIC = '{}/{}/static'.format(APP_ROOT, MODULE)
+MODULE = 'gp2'
+STATIC = '{}/static'.format(APP_ROOT)
 REPO = 'https://github.com/ywryoo/GP2.git'
 
 
 SUPERVISOR_TEMPLATE = '''
 [program:{module}]
 command={vroot}/gunicorn app:app -b unix:/tmp/gunicorn.sock -w 2
-directory={root}/{module}
+directory={root}
 user=nobody
 autostart=true
 autorestart=true
@@ -59,10 +59,13 @@ NGINX_TEMPLATE = '''
 
     # path for static files
 
-    location /static/ {{
-      alias {static}/;
-      autoindex off;
-    }}
+    # this should be automatically appended
+    # for each static directory of modules; until then, we just use flask
+    # to handle static files
+    # location /static/ {{
+    #   alias {static}/;
+    #   autoindex off;
+    # }}
 
     location / {{
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -76,9 +79,9 @@ NGINX_TEMPLATE = '''
     }}
 
     error_page 500 502 503 504 /500.html;
-    location = /500.html {{
-      alias {static};
-    }}
+    # location = /500.html {{
+    #   alias {static};
+    # }}
   }}
 '''
 
@@ -86,7 +89,7 @@ NGINX_TEMPLATE = '''
 def _make_supervisor_conf():
     template = StringIO.StringIO()
     template.write(SUPERVISOR_TEMPLATE
-                   .format(module=MODULE, vroot=VENV_ROOT, root=APP_ROOT))
+                   .format(vroot=VENV_ROOT, root=APP_ROOT))
     put(template,
         '{supervisor_dir}{vhost}.conf'
         .format(supervisor_dir=SUPERVISOR_DIR, vhost=VHOST),
@@ -107,7 +110,8 @@ def _make_vhost():
 
 def _clone_repo():
     with cd(APPS_DIR):
-        run('git clone {repo} {to}'.format(repo=REPO, to=APP_ROOT))
+        run('git clone --recursive {repo} {to}'
+            .format(repo=REPO, to=APP_ROOT))
 
 
 def _install_venv():
@@ -122,7 +126,7 @@ def _install_dep():
 
 def _update_repo():
     with cd(APP_ROOT):
-        run('git pull')
+        run('git submodule update --recursive --remote')
 
 
 def _reload_webserver():
