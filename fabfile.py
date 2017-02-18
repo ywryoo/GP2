@@ -56,8 +56,8 @@ NGINX_TEMPLATE = '''
     server_name {host};
 
     keepalive_timeout 5;
-        ssl_certificate /etc/letsencrypt/live/gp2.ryoo.kr/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/gp2.ryoo.kr/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/{host}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{host}/privkey.pem;
         ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
         ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
