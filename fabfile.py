@@ -150,7 +150,7 @@ def _install_dep():
 
 def _update_repo():
     with cd(APP_ROOT):
-        run('git submodule update --recursive --remote')
+        run('git pull && git submodule update --recursive --remote')
 
 
 def _reload_webserver():
