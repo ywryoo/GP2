@@ -35,7 +35,7 @@ redirect_stderr=true
 SUPERVISOR_DIR = '/etc/supervisor/conf.d/'
 NGINX_DIR = '/etc/nginx/sites-'
 NGINX_TEMPLATE = '''
-  upstream app_server {{
+ upstream app_server {{
     # fail_timeout=0 means we always retry an upstream even if it failed
     # to return a good HTTP response
 
@@ -51,12 +51,28 @@ NGINX_TEMPLATE = '''
     # use 'listen 80 accept_filter=httpready;' for FreeBSD
     listen 80 deferred;
     client_max_body_size 4G;
-
+    listen 443 http2 ssl;
     # set the correct host(s) for your site
     server_name {host};
 
     keepalive_timeout 5;
+        ssl_certificate /etc/letsencrypt/live/gp2.ryoo.kr/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/gp2.ryoo.kr/privkey.pem;
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
 
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_prefer_server_ciphers on;
+        ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
+        ssl_ecdh_curve secp384r1;
+        ssl_session_cache shared:SSL:10m;
+#       ssl_session_tickets off;
+        ssl_stapling on;
+        ssl_stapling_verify on;
+        resolver 8.8.8.8 8.8.4.4 valid=300s;
+        resolver_timeout 5s;
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+        add_header X-Frame-Options DENY;
+        add_header X-Content-Type-Options nosniff;
     # path for static files
 
     # this should be automatically appended
@@ -67,14 +83,22 @@ NGINX_TEMPLATE = '''
     #   autoindex off;
     # }}
 
+    location ~ /.well-known/ {{
+        root /var/www/html;
+        allow all;
+    }}
+
     location / {{
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       # enable this if and only if you use HTTPS
-      # proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header X-Forwarded-Proto https;
       proxy_set_header Host $http_host;
+      proxy_set_header X-real-IP $remote_addr;
+      proxy_set_header X-NginX-Proxy true;
       # we don't want nginx trying to do something clever with
       # redirects, we set the Host: header above already.
       proxy_redirect off;
+      proxy_buffering off;
       proxy_pass http://app_server;
     }}
 
