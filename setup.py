@@ -10,7 +10,7 @@ MIT License: see LICENSE in the root directory of this source tree.
 from setuptools import setup
 
 setup(
-    name='Graduation Project 2',
+    name='gp2',
     long_description=__doc__,
     version='0.1.0',
     packages=['gp2gatherplot'],
