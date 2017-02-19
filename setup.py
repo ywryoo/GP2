@@ -22,7 +22,7 @@ setup(
     ],
     extras_require={
         'dev': [
-            'Fabric'
+            'fabric3'
         ]
     },
     setup_requires=[

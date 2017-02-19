@@ -8,7 +8,10 @@ MIT License: see LICENSE in the root directory of this source tree.
 """
 from fabric.api import *
 from fabric.operations import get, put
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import os
 
 env.hosts = ['gp2.ryoo.kr']
